@@ -56,35 +56,6 @@ public class MongoDbInterop implements Closeable{
         }
     }
 
-    public Date getDateTime(String dateTime) {
-        String date = dateTime.substring(0, dateTime.indexOf("T"));
-        String time = dateTime.substring(dateTime.indexOf("T") + 1);
-
-        List<String> dateValues = getValues(date, '-');
-        int year = Integer.parseInt(dateValues.get(0));
-        int month = Integer.parseInt(dateValues.get(1));
-        int day = Integer.parseInt(dateValues.get(2));
-
-        List<String> timeValues = getValues(time, ':');
-        int hours = Integer.parseInt(timeValues.get(0));
-        int minutes = Integer.parseInt(timeValues.get(1));
-        int seconds = timeValues.get(2).contains(".") ?
-                Integer.parseInt(timeValues.get(2).
-                        substring(0, timeValues.get(2).indexOf("."))): Integer.parseInt(timeValues.get(2));
-
-        return new Date(year - 1900, month - 1, day, hours, minutes, seconds);
-    }
-    private List<String> getValues(String csvLog, char separator) {
-        String partLog = csvLog;
-        List<String> values = new ArrayList<>();
-        while (partLog.indexOf(separator) != -1) {
-            values.add((partLog.substring(0, partLog.indexOf(separator))).trim());
-            partLog = partLog.substring(partLog.indexOf(separator) + 1);
-        }
-        values.add(partLog.trim());
-        return values;
-    }
-
     public MongoIterable<Document> getAllLogs() {
         return collection.find();
     }
@@ -106,17 +77,17 @@ public class MongoDbInterop implements Closeable{
                 .projection(fields(include(LogModel.URL), excludeId()));
     }
 
-    public MongoIterable<Document> getTotalVisitCountOfUrls() {
-        String destinationName = "totalVisitCountOfUrls";
-        String mapFunction = String.format("function () { emit(%s, 1); }", T_URL);
+    public MongoIterable<Document> getTotalVisitTimeOfUrls() {
+        String destinationName = "totalVisitTimeOfUrls";
+        String mapFunction = String.format("function () { emit(%s, %s); }", T_URL, T_TIME_SPENT);
         String reduceFunction = "function(key, values) { return Array.sum(values) / 1000; }";
 
         collection.mapReduce(mapFunction, reduceFunction).collectionName(destinationName).toCollection();
         return dataBase.getCollection(destinationName).find().sort(descending("value"));
     }
-    public MongoIterable<Document> getTotalVisitTimeOfUrls() {
-        String destinationName = "totalVisitTimeOfUrls";
-        String mapFunction = String.format("function () { emit(%s, %s); }", T_URL, T_TIME_SPENT);
+    public MongoIterable<Document> getTotalVisitCountOfUrls() {
+        String destinationName = "totalVisitCountOfUrls";
+        String mapFunction = String.format("function () { emit(%s, 1); }", T_URL);
         String reduceFunction = "function(key, values) { return Array.sum(values); }";
 
         collection.mapReduce(mapFunction, reduceFunction).collectionName(destinationName).toCollection();
@@ -134,7 +105,7 @@ public class MongoDbInterop implements Closeable{
     }
     public MongoIterable<Document> getTotalVisitsCountAndTimeOfIps() {
         String destinationName = "totalVisitsCountAndTimeOfIps";
-        String mapFunction = String.format("function (){ emit(%s, {totalCount: 1, totalDuration: %s}); }", T_IP, T_TIME_SPENT);
+        String mapFunction = String.format("function (){ emit({ip: %s, url: %s}, {totalCount: 1, totalDuration: %s}); }", T_IP, T_URL, T_TIME_SPENT);
         String reduceFunction = "function(key, values) {" +
                 "var totalCount = 0; " +
                 "var totalDuration = 0; " +
@@ -144,7 +115,7 @@ public class MongoDbInterop implements Closeable{
                 "return {totalCount: totalCount, totalDuration: totalDuration}; }";
 
         collection.mapReduce(mapFunction, reduceFunction).collectionName(destinationName).toCollection();
-        return dataBase.getCollection(destinationName).find().sort(descending("totalCount", "totalDuration"));
+        return dataBase.getCollection(destinationName).find().sort(descending("url", "totalCount", "totalDuration"));
     }
 
     public MongoCollection<Document> getCollection() {

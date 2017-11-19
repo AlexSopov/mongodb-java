@@ -17,7 +17,33 @@ public class Program {
 
     public static void main(String[] args) {
         List<LogModel> logModels = generateLogs();
-        MongoDbInterop mongoLogHandler = new MongoDbInterop();
+        try (MongoDbInterop mongoLogHandler = new MongoDbInterop()) {
+            printIterable(mongoLogHandler.getAllLogs());
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getVisitedUrlsByIp(ips[3]));
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getVisitorsIpsOfUrl(urls[3]));
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getVisitedUrlsInPeriod(dates[2], dates[0]));
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getTotalVisitTimeOfUrls());
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getTotalVisitCountOfUrls());
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getVisitsCountOfUrlsInPeriod(dates[2], dates[0]));
+
+            System.out.println("\n");
+            printIterable(mongoLogHandler.getTotalVisitsCountAndTimeOfIps());
+        }
+
+
+
 
         //Uncomment to delete logs
 //         try (MongoCursor<Document> cursor = mongoLogHandler.getCollection().find().iterator()) {
@@ -28,26 +54,6 @@ public class Program {
 
         // Uncomment to add new logs
 //        logModels.forEach(log -> mongoLogHandler.insert(log.toDocument()));
-
-        printIterable(mongoLogHandler.getAllLogs());
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getVisitedUrlsByIp(ips[0]));
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getVisitorsIpsOfUrl(urls[0]));
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getVisitedUrlsInPeriod(dates[2], dates[0]));
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getTotalVisitTimeOfUrls());
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getTotalVisitCountOfUrls());
-
-        System.out.println("\n");
-        printIterable(mongoLogHandler.getVisitsCountOfUrlsInPeriod(dates[2], dates[0]));
     }
 
 
