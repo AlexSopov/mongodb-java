@@ -1,3 +1,5 @@
+package usage;
+
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoIterable;
@@ -41,10 +43,7 @@ public class Program {
             System.out.println("\n");
             printIterable(mongoLogHandler.getTotalVisitsCountAndTimeOfIps());
         }
-
-
-
-
+        
         //Uncomment to delete logs
 //         try (MongoCursor<Document> cursor = mongoLogHandler.getCollection().find().iterator()) {
 //         while (cursor.hasNext()) {
