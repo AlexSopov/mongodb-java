@@ -1,8 +1,11 @@
 language: java
 sudo: required
+services: mongodb
 
 jdk:
   - oraclejdk8
+
+
 
 before_install:
   - chmod +x gradlew
