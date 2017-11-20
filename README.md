@@ -1,4 +1,10 @@
-# mongodb-java
+# Mongodb java
+In this repository presents unsing of Java integration to Mongodb. Realised different queries, including map reduce paradigm.
+
+[![Build Status](https://travis-ci.org/AlexSopov/mongodb-java.svg?branch=master)](https://travis-ci.org/AlexSopov/mongodb-java)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6aaf74fae035409fae95220fb7506ec9)](https://www.codacy.com/app/AlexSopov/mongodb-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=AlexSopov/mongodb-java&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/6aaf74fae035409fae95220fb7506ec9)](https://www.codacy.com/app/AlexSopov/mongodb-java?utm_source=github.com&utm_medium=referral&utm_content=AlexSopov/mongodb-java&utm_campaign=Badge_Coverage)
+[![codecov](https://codecov.io/gh/AlexSopov/mongodb-java/branch/master/graph/badge.svg)](https://codecov.io/gh/AlexSopov/mongodb-java)
 
 ### Processed data
 1. User ip: 109.108.22.11
