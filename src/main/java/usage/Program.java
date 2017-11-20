@@ -105,7 +105,11 @@ public class Program {
 
         return documents;
     }
-    public static void printIterable(MongoIterable<Document> documentFindIterable) {
+    public static void printIterable(MongoIterable<Document> documentFindIterable) throws IllegalArgumentException {
+        if (documentFindIterable == null) {
+            throw new IllegalArgumentException();
+        }
+
         try (MongoCursor<Document> cursor = documentFindIterable.iterator()) {
             while (cursor.hasNext()) {
                 System.out.println(cursor.next().toJson());

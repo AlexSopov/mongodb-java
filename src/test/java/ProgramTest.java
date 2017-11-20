@@ -7,4 +7,9 @@ public class ProgramTest {
     public void canGenerateLogs() {
         Assert.assertNotNull(Program.generateLogs());
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void canNotPerformPrintigNull() {
+        Program.printIterable(null);
+    }
 }
