@@ -2,6 +2,9 @@ package model;
 
 import org.bson.Document;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,9 +14,13 @@ public class LogModel implements Serializable{
     public static final String TIME_STAMP = "timeStamp";
     public static final String TIME_SPENT = "timeSpent";
 
+    @Pattern(regexp = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$")
     private String userIpAddress;
+    @Pattern(regexp = "^(http://|https://|www.)?((((\\\\S+/)+\\\\S)(\\\\S*))|(\\\\S*\\\\.\\\\S*))$")
     private String sourceUrl;
+    @NotNull
     private Date timeStamp;
+    @Positive
     private long timeSpent;
 
     public LogModel(String userIpAddress, String sourceUrl, Date timeStamp, long timeSpent) {

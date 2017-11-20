@@ -19,31 +19,31 @@ public class Program {
 
     public static void main(String[] args) {
         List<LogModel> logModels = generateLogs();
-        try (MongoDbInterop mongoLogHandler = new MongoDbInterop()) {
-            printIterable(mongoLogHandler.getAllLogs());
+        try (MongoDbInterop mongoDbInterop = new MongoDbInterop("logsDb")) {
+            printIterable(mongoDbInterop.getAllLogs());
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getVisitedUrlsByIp(ips[3]));
+            printIterable(mongoDbInterop.getVisitedUrlsByIp(ips[3]));
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getVisitorsIpsOfUrl(urls[3]));
+            printIterable(mongoDbInterop.getVisitorsIpsOfUrl(urls[3]));
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getVisitedUrlsInPeriod(dates[2], dates[0]));
+            printIterable(mongoDbInterop.getVisitedUrlsInPeriod(dates[2], dates[0]));
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getTotalVisitTimeOfUrls());
+            printIterable(mongoDbInterop.getTotalVisitTimeOfUrls());
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getTotalVisitCountOfUrls());
+            printIterable(mongoDbInterop.getTotalVisitCountOfUrls());
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getVisitsCountOfUrlsInPeriod(dates[2], dates[0]));
+            printIterable(mongoDbInterop.getVisitsCountOfUrlsInPeriod(dates[2], dates[0]));
 
             System.out.println("\n");
-            printIterable(mongoLogHandler.getTotalVisitsCountAndTimeOfIps());
+            printIterable(mongoDbInterop.getTotalVisitsCountAndTimeOfIps());
         }
-        
+
         //Uncomment to delete logs
 //         try (MongoCursor<Document> cursor = mongoLogHandler.getCollection().find().iterator()) {
 //         while (cursor.hasNext()) {
@@ -55,8 +55,7 @@ public class Program {
 //        logModels.forEach(log -> mongoLogHandler.insert(log.toDocument()));
     }
 
-
-    private static List<LogModel> generateLogs() {
+    public static List<LogModel> generateLogs() {
         List<LogModel> documents = new ArrayList<>();
 
         ips = new String[] {
@@ -119,7 +118,7 @@ public class Program {
 
         return documents;
     }
-    private static void printIterable(MongoIterable<Document> documentFindIterable) {
+    public static void printIterable(MongoIterable<Document> documentFindIterable) {
         try (MongoCursor<Document> cursor = documentFindIterable.iterator()) {
             while (cursor.hasNext()) {
                 System.out.println(cursor.next().toJson());

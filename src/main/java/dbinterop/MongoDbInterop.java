@@ -2,7 +2,6 @@ package dbinterop;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
@@ -10,9 +9,7 @@ import model.LogModel;
 import org.bson.Document;
 
 import java.io.Closeable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Projections.*;
@@ -29,9 +26,9 @@ public class MongoDbInterop implements Closeable{
     private MongoDatabase dataBase;
     private MongoClient mongoClient;
 
-    public  MongoDbInterop() {
+    public  MongoDbInterop(String databaseName) {
         mongoClient = new MongoClient("localhost", 27017);
-        dataBase = mongoClient.getDatabase("logsDb");
+        dataBase = mongoClient.getDatabase(databaseName);
         collection = dataBase.getCollection("logs");
     }
 
@@ -42,16 +39,6 @@ public class MongoDbInterop implements Closeable{
         }
         catch (MongoException mongoException) {
             System.out.println("Can not insert object");
-            return false;
-        }
-    }
-    public boolean insertMany(List<Document> documents) {
-        try {
-            collection.insertMany(documents);
-            return true;
-        }
-        catch (MongoException mongoException) {
-            System.out.println("Can not insert objects");
             return false;
         }
     }
@@ -120,16 +107,6 @@ public class MongoDbInterop implements Closeable{
 
     public MongoCollection<Document> getCollection() {
         return collection;
-    }
-    public void setCollection(MongoCollection<Document> collection) {
-        this.collection = collection;
-    }
-
-    public MongoDatabase getDatabase() {
-        return dataBase;
-    }
-    public void setDatabase(MongoDatabase database) {
-        this.dataBase = database;
     }
 
     @Override
