@@ -130,6 +130,13 @@ public class MongoDbInteropTest {
         Assert.assertEquals(logModels.get(0).getDouble("value"), 1D, 0.0001);
     }
 
+    @Test
+    public void canGetTotalVisitsCountAndTimeOfIps() {
+        ArrayList<Document> logModels = toArrayList(currentMongoDbInterop.getTotalVisitsCountAndTimeOfIps());
+        Assert.assertEquals(logModels.size(), 2);
+    }
+
+
     private ArrayList<Document> toArrayList(MongoIterable<Document> documentFindIterable) {
         ArrayList<Document> result = new ArrayList<>();
 

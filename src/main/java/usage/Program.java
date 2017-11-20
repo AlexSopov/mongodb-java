@@ -22,25 +22,12 @@ public class Program {
         try (MongoDbInterop mongoDbInterop = new MongoDbInterop("logsDb")) {
             printIterable(mongoDbInterop.getAllLogs());
 
-            System.out.println("\n");
             printIterable(mongoDbInterop.getVisitedUrlsByIp(ips[3]));
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getVisitorsIpsOfUrl(urls[3]));
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getVisitedUrlsInPeriod(dates[2], dates[0]));
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getTotalVisitTimeOfUrls());
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getTotalVisitCountOfUrls());
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getVisitsCountOfUrlsInPeriod(dates[2], dates[0]));
-
-            System.out.println("\n");
             printIterable(mongoDbInterop.getTotalVisitsCountAndTimeOfIps());
         }
 
